@@ -1,3 +1,4 @@
+import SubscribeLeaveToggle from "@/components/SubscribeLeaveToggle"
 import { getAuthSession } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { format } from "date-fns"
@@ -70,12 +71,34 @@ const Layout = async ({
                             <dt className="text-gray-500">
                                 Created
                             </dt>
-                            <dt className="text-gray-700">
+                            <dd className="text-gray-700">
                                 <time dateTime={subreddit.createdAt.toDateString()}>
                                     {format(subreddit.createdAt, 'MMMM d, yyyy')}
                                 </time>
-                            </dt>
+                            </dd>
                         </div>
+
+                        <div className="flex justify-between gap-x-4 py-3">
+                            <dt className="text-gray-500">
+                                Members
+                            </dt>
+                            <dd className="text-gray-700">
+                               <div className="text-gray-900">{memberCount}</div>
+                            </dd>
+                        </div> 
+
+                        {subreddit.creatorId === session?.user.id ? (
+                            <div className="flex justify-between gap-x-4 py-3">
+                                <p className="text-gray-500">
+
+                                </p>
+                                You created this community
+                            </div>
+                        ): null} 
+
+                        {subreddit.creatorId !== session?.user.id ? (
+                            <SubscribeLeaveToggle subredditId={subreddit.id} subredditName={subreddit.name} />
+                        ): null}
                     </dl>
                 </div>
             </div>
